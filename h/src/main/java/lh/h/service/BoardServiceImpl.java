@@ -44,8 +44,8 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public void saveFile(Board board, MultipartFile file) throws IOException {
-        // 실행 중 파일 저장 경로 설정 (JAR 외부 디렉토리)
-        String uploadDir = Paths.get(System.getProperty("user.dir"), "files").toString();
+        // 파일 저장 경로 설정 (명시적으로 지정)
+        String uploadDir = "/home/ubuntu/test/h/files";
 
         // 디렉토리 생성
         File saveDir = new File(uploadDir);
@@ -87,14 +87,14 @@ public class BoardServiceImpl implements BoardService {
         if (file != null && !file.isEmpty()) {
             // 기존 파일 삭제
             if (existingBoard.getFilepath() != null) {
-                File existingFile = new File(Paths.get(System.getProperty("user.dir"), "files", existingBoard.getFilename()).toString());
+                File existingFile = new File(Paths.get("/home/ubuntu/test/h/files", existingBoard.getFilename()).toString());
                 if (existingFile.exists()) {
                     existingFile.delete();
                 }
             }
 
             // 저장 경로 설정
-            String uploadDir = Paths.get(System.getProperty("user.dir"), "files").toString();
+            String uploadDir = "/home/ubuntu/test/h/files";
 
             // 디렉토리 생성
             File saveDir = new File(uploadDir);
@@ -116,6 +116,7 @@ public class BoardServiceImpl implements BoardService {
         // 변경 사항 저장
         boardRepository.save(existingBoard);
     }
+
 
     /* board delete */
     @Transactional

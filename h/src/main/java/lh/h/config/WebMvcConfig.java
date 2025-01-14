@@ -5,12 +5,13 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // /files/** URL을 JAR 외부 디렉토리로 매핑
+        // /files/** URL을 /home/ubuntu/test/h/files 디렉토리로 매핑
         registry.addResourceHandler("/files/**")
-                .addResourceLocations("file:" + System.getProperty("user.dir") + "/files/");
+                .addResourceLocations("file:/home/ubuntu/test/h/files/");
     }
 }
