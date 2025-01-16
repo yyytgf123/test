@@ -22,6 +22,7 @@ public class BoardServiceImpl implements BoardService {
     @Autowired
     private final BoardRepository boardRepository;
 
+
     public BoardServiceImpl(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
     }
@@ -40,15 +41,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
     /* form write(file upload + write) */
-    /** file upload saveUrl**/
+    /** File Mapping url **/
+    private static final String UPLOAD_DIR = Paths.get(System.getProperty("user.dir"), "files").toString();
+
     @Override
     @Transactional
     public void saveFile(Board board, MultipartFile file) throws IOException {
-        // 파일 저장 경로 설정 (명시적으로 지정)
-        String uploadDir = "/home/ubuntu/test/h/files";
-
         // 디렉토리 생성
-        File saveDir = new File(uploadDir);
+        File saveDir = new File(UPLOAD_DIR);
         if (!saveDir.exists()) {
             saveDir.mkdirs(); // 디렉토리가 없으면 생성
         }
@@ -56,7 +56,7 @@ public class BoardServiceImpl implements BoardService {
         // 파일 처리
         if (file != null && !file.isEmpty()) {
             String uniqueFilename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename(); // 고유한 파일명 생성
-            String filePath = Paths.get(uploadDir, uniqueFilename).toString(); // 전체 파일 경로 설정
+            String filePath = Paths.get(UPLOAD_DIR, uniqueFilename).toString(); // 전체 파일 경로 설정
 
             // 파일 저장
             File saveFile = new File(filePath);
@@ -87,24 +87,21 @@ public class BoardServiceImpl implements BoardService {
         if (file != null && !file.isEmpty()) {
             // 기존 파일 삭제
             if (existingBoard.getFilepath() != null) {
-                File existingFile = new File(Paths.get("/home/ubuntu/test/h/files", existingBoard.getFilename()).toString());
+                File existingFile = new File(Paths.get(UPLOAD_DIR, existingBoard.getFilename()).toString());
                 if (existingFile.exists()) {
                     existingFile.delete();
                 }
             }
 
-            // 저장 경로 설정
-            String uploadDir = "/home/ubuntu/test/h/files";
-
             // 디렉토리 생성
-            File saveDir = new File(uploadDir);
+            File saveDir = new File(UPLOAD_DIR);
             if (!saveDir.exists()) {
                 saveDir.mkdirs();
             }
 
             // 새 파일 저장
             String uniqueFilename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename(); // 고유 파일명 생성
-            String filePath = Paths.get(uploadDir, uniqueFilename).toString(); // 전체 경로 생성
+            String filePath = Paths.get(UPLOAD_DIR, uniqueFilename).toString(); // 전체 경로 생성
             File saveFile = new File(filePath);
             file.transferTo(saveFile); // 파일 저장
 
@@ -116,7 +113,6 @@ public class BoardServiceImpl implements BoardService {
         // 변경 사항 저장
         boardRepository.save(existingBoard);
     }
-
 
     /* board delete */
     @Transactional
