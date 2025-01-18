@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 및 회원가입</title>
+    <link href="/css/tailwind-out.css" rel="stylesheet">
+    <link href="/css/userPage.css" rel="stylesheet">
+
+</head>
+<body>
+<!-- home icon -->
+<header class="absolute inset-x-0 top-0 z-50">
+    <div class="flex justify-center mt-8">
+        <a href="/">
+            <img class="h-16 w-auto" src="/picture/homeimage.png" alt="logo">
+        </a>
+    </div>
+</header>
+
+<script src="/js/userPage.js" defer></script>
+
+<div class="container right-panel-active" id="container">
+    <!-- 회원가입 -->
+    <div class="container__form container--signup">
+        <form th:action="@{/user/signup}" th:object="${memberCreateForm}" method="post" class="form">
+            <h2 class="form__title">Sign Up</h2>
+            <div class="input">
+                <input type="text" id="username" th:field="*{username}" placeholder="Id" />
+                <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error"></div>
+            </div>
+            <div class="input">
+                <input type="email" id="email" th:field="*{email}" placeholder="Email" />
+                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></div>
+            </div>
+            <div class="input">
+                <input type="password" id="password1" th:field="*{password1}" placeholder="Password" />
+                <div th:if="${#fields.hasErrors('password1')}" th:errors="*{password1}" class="error"></div>
+            </div>
+            <div class="input">
+                <input type="password" id="password2" th:field="*{password2}" placeholder="Confirm Password" />
+                <div th:if="${#fields.hasErrors('password2')}" th:errors="*{password2}" class="error"></div>
+            </div>
+            <button class="btn" type="submit">Sign Up</button>
+        </form>
+    </div>
+
+    <!-- 로그인 -->
+    <div class="container__form container--signin">
+        <form th:action="@{/user/login}" method="post" class="form">
+            <h2 class="form__title">Sign In</h2>
+            <div class="input">
+                <input type="email" name="email" placeholder="Email" required />
+            </div>
+            <div class="input">
+                <input type="password" name="password" placeholder="Password" required />
+            </div>
+            <button class="btn" type="submit">Sign In</button>
+            <div th:if="${error}" th:text="${error}" style="color:red;"></div>
+        </form>
+    </div>
+
+    <!-- 전환 버튼 -->
+    <div class="container__overlay">
+        <div class="overlay">
+            <div class="overlay__panel overlay--left">
+                <button class="btn" id="signIn">Sign In</button>
+            </div>
+            <div class="overlay__panel overlay--right">
+                <button class="btn" id="signUp">Sign Up</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
